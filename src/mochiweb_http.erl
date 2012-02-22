@@ -10,8 +10,8 @@
 -export([after_response/2, reentry/1]).
 -export([parse_range_request/1, range_skip_length/2]).
 
--define(REQUEST_RECV_TIMEOUT, 300000).   %% timeout waiting for request line
--define(HEADERS_RECV_TIMEOUT, 30000).    %% timeout waiting for headers
+-define(REQUEST_RECV_TIMEOUT, try os:getenv("REQUEST_RECV_TIMEOUT") of false -> 15000; V -> list_to_integer(V) catch _:_ -> 15000 end).   %% timeout waiting for request line
+-define(HEADERS_RECV_TIMEOUT, try os:getenv("HEADERS_RECV_TIMEOUT") of false -> 15000; V -> list_to_integer(V) catch _:_ -> 15000 end).
 
 -define(MAX_HEADERS, 1000).
 -define(DEFAULTS, [{name, ?MODULE},
